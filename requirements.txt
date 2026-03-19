@@ -1,0 +1,8 @@
+# 家乡助手 - 安卓应用
+# 技术栈: Python + Kivy + Buildozer
+
+kivy>=2.2.0
+kivymd>=1.1.1
+requests>=2.31.0
+geopy>=2.4.0
+plyer>=2.1.0

@@ -1,0 +1,70 @@
+name: Build Android APK
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install buildozer cython
+
+      - name: Install buildozer requirements
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            git ffmpeg libffi-dev libssl-dev libgstreamer1.0-dev \
+            gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
+            libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-gfx-dev \
+            libtool libjpeg-dev libpng-dev libtiff-dev libopenjp2-dev \
+            zlib1g-dev autoconf automake libltdl-dev pkg-config \
+            openjdk-17-jdk-headless openjdk-17-jre-headless \
+            cmake curl unzip
+
+      - name: Setup Android environment
+        uses: android-actions/setup-android@v3
+
+      - name: Build APK with Buildozer
+        run: |
+          # 设置环境变量
+          export ANDROID_HOME=$ANDROID_SDK_ROOT
+          export ANDROID_NDK_HOME=$ANDROID_NDK_ROOT
+          
+          # 创建 buildozer 工作目录
+          mkdir -p .buildozer/android/platform/build-arm64-v8a
+          
+          # 运行 buildozer
+          buildozer -v android debug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hometown-app-apk
+          path: bin/*.apk
+          if-no-files-found: error
+
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: bin/*.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

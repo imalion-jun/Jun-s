@@ -7,9 +7,6 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -55,7 +52,13 @@ jobs:
     - name: Check project files
       run: |
         ls -la
-        cat buildozer.spec | head -20
+        if [ -f "buildozer.spec" ]; then
+          echo "✓ buildozer.spec found"
+          cat buildozer.spec | head -20
+        else
+          echo "✗ buildozer.spec NOT found!"
+          exit 1
+        fi
         
     - name: Build APK
       run: |

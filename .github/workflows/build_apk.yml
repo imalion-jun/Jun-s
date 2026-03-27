@@ -7,6 +7,9 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -48,6 +51,11 @@ jobs:
       run: |
         pip install --upgrade pip
         pip install buildozer cython
+        
+    - name: Check project files
+      run: |
+        ls -la
+        cat buildozer.spec | head -20
         
     - name: Build APK
       run: |

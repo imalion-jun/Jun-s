@@ -1,91 +1,63 @@
-# GitHub Actions 自动构建 APK 指南
+# 血糖监测记录系统 - Android版本
 
-## 优点
-- ✅ 完全免费
-- ✅ 无需本地配置
-- ✅ 自动构建，稳定可靠
-- ✅ 构建完成后自动下载 APK
+## 项目说明
+这是一个基于Kivy框架开发的Android血糖监测应用，支持数据录入、趋势图表查看和Excel导出功能。
 
----
+## 功能特性
+- ✅ 血糖数据录入（6个时间点）
+- ✅ SQLite数据持久化存储
+- ✅ 趋势折线图查看
+- ✅ Excel数据导出
+- ✅ 中文界面支持
 
-## 使用步骤
+## 自动构建APK
 
-### 第一步：创建 GitHub 仓库
+本项目使用 **GitHub Actions** 自动构建 Android APK。
 
-1. 访问 https://github.com/new
-2. 仓库名称：`healthcare-android`（或其他你喜欢的名字）
-3. 选择 **Public**（公开）或 **Private**（私有）
-4. 点击 **Create repository**
+### 构建状态
+[![Build Android APK](https://github.com/imalion-jun/Jun-s/actions/workflows/build-apk.yml/badge.svg)](https://github.com/imalion-jun/Jun-s/actions/workflows/build-apk.yml)
 
-### 第二步：上传代码到 GitHub
+### 如何获取APK
 
-在本地项目目录打开 PowerShell 或 CMD：
+1. 点击上方徽章或进入仓库的 **Actions** 标签
+2. 选择最新的工作流运行记录
+3. 在页面底部的 **Artifacts** 区域下载 `healthcare-app-apk`
+4. 解压ZIP文件即可获得 `.apk` 安装包
 
-```powershell
-cd D:\list\healthcare_android
+### 手动触发构建
 
-# 初始化 git
-git init
+1. 进入仓库的 **Actions** 标签
+2. 点击 **Build Android APK**
+3. 点击右侧 **Run workflow** → **Run workflow**
 
-# 添加所有文件
-git add .
-
-# 提交
-git commit -m "Initial commit"
-
-# 添加远程仓库（将 YOUR_USERNAME 替换为你的 GitHub 用户名）
-git remote add origin https://github.com/YOUR_USERNAME/healthcare-android.git
-
-# 推送代码
-git push -u origin main
+## 文件结构
+```
+.
+├── main.py                    # 主程序
+├── buildozer.spec             # Buildozer打包配置
+├── .github/workflows/         # GitHub Actions配置
+│   └── build-apk.yml
+└── README.md                  # 本说明文档
 ```
 
-### 第三步：触发构建
+## 技术栈
+- Python 3.10
+- Kivy 2.2.1
+- Matplotlib 3.7.2
+- Pandas 2.0.3
+- Buildozer
 
-1. 打开 GitHub 仓库页面
-2. 点击顶部 **Actions** 标签
-3. 点击左侧 **Build Android APK**
-4. 点击右侧 **Run workflow** → **Run workflow**
+## 本地开发
 
-或者，直接修改任意文件并推送，会自动触发构建。
-
-### 第四步：下载 APK
-
-1. 等待构建完成（约 20-40 分钟）
-2. 进入 **Actions** 页面
-3. 点击最新的工作流运行记录
-4. 滚动到底部，找到 **Artifacts** 区域
-5. 点击 **healthcare-app-apk** 下载 ZIP 文件
-6. 解压 ZIP，得到 `.apk` 文件
-
----
-
-## 构建状态查看
-
-在 GitHub 仓库页面：
-- 绿色 ✅ = 构建成功
-- 红色 ❌ = 构建失败（可点击查看日志）
-- 黄色 🟡 = 正在构建中
-
----
-
-## 常见问题
-
-### Q: 构建失败怎么办？
-点击失败的运行记录 → **build** → 查看日志，搜索 "error" 或 "Error" 找原因。
-
-### Q: 如何修改构建配置？
-编辑 `.github/workflows/build-apk.yml` 文件，推送后会自动生效。
-
-### Q: 私有仓库能用吗？
-可以，GitHub Actions 对私有仓库也有免费额度（每月 2000 分钟）。
-
----
-
-## 文件说明
-
+### 安装依赖
+```bash
+pip install kivy matplotlib pandas openpyxl
 ```
-.github/workflows/build-apk.yml    # GitHub Actions 配置文件
-main.py                             # 主程序
-buildozer.spec                      # Buildozer 打包配置
+
+### 运行程序
+```bash
+python main.py
 ```
+
+## 许可证
+MIT License

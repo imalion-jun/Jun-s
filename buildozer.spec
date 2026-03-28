@@ -45,7 +45,7 @@ fullscreen = 0
 android.apptheme = "@android:style/Theme.NoTitleBar"
 
 # 构建模式
-android.build_mode = release
+android.build_mode = debug
 
 [buildozer]
 # 日志级别
